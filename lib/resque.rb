@@ -113,7 +113,7 @@ module Resque
     case server
     when String
       if server =~ /redis\:\/\//
-        redis = Redis.connect(:url => server, :thread_safe => true)
+        redis = Redis.new(:url => server, :thread_safe => true)
       else
         server, namespace = server.split('/', 2)
         host, port, db = server.split(':')
@@ -138,7 +138,7 @@ module Resque
   # create a new one.
   def redis
     return @data_store if @data_store
-    self.redis = Redis.respond_to?(:connect) ? Redis.connect : "localhost:6379"
+    self.redis = Redis.respond_to?(:new) ? Redis.new : "localhost:6379"
     self.redis
   end
   alias :data_store :redis
